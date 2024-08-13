@@ -176,10 +176,16 @@ func (h *Handler) CancelBooking(c *gin.Context) {
 		return
 	}
 
+	message, err := json.Marshal(pb.ID{Id: id})
+	if err != nil {
+		handleError(c, h, err, "error serializing booking", http.StatusInternalServerError)
+		return
+	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), h.ContextTimeout)
 	defer cancel()
 
-	err := h.KafkaProducer.Produce(ctx, h.TopicBookingCancelled, []byte(id))
+	err = h.KafkaProducer.Produce(ctx, h.TopicBookingCancelled, message)
 	if err != nil {
 		handleError(c, h, err, "error canceling booking", http.StatusInternalServerError)
 		return

@@ -242,15 +242,6 @@ definitions:
       id:
         type: string
     type: object
-  providers.Filter:
-    properties:
-      average_rating:
-        type: number
-      company_name:
-        type: string
-      created_at:
-        type: string
-    type: object
   providers.Location:
     properties:
       address:
@@ -346,17 +337,6 @@ definitions:
         type: string
       id:
         type: string
-    type: object
-  services.Filter:
-    properties:
-      created_at:
-        type: string
-      duration:
-        type: integer
-      name:
-        type: string
-      price:
-        type: number
     type: object
   services.NewService:
     properties:
@@ -702,12 +682,18 @@ paths:
     get:
       description: Searches providers
       parameters:
-      - description: Search data
-        in: body
-        name: data
-        required: true
-        schema:
-          $ref: '#/definitions/providers.Filter'
+      - description: Company name
+        in: query
+        name: company_name
+        type: string
+      - description: Created at
+        in: query
+        name: created_at
+        type: string
+      - description: Average rating
+        in: query
+        name: average_rating
+        type: number
       responses:
         "200":
           description: OK
@@ -968,12 +954,22 @@ paths:
     post:
       description: Searches services
       parameters:
-      - description: Search data
-        in: body
-        name: data
-        required: true
-        schema:
-          $ref: '#/definitions/services.Filter'
+      - description: Name
+        in: query
+        name: name
+        type: string
+      - description: Created at
+        in: query
+        name: created_at
+        type: string
+      - description: Price
+        in: query
+        name: price
+        type: number
+      - description: Duration
+        in: query
+        name: duration
+        type: integer
       responses:
         "200":
           description: OK

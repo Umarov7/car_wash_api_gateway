@@ -75,3 +75,16 @@ func parseIntQueryParam(queryParam string) (int32, error) {
 
 	return int32(value), nil
 }
+
+func parseFloatQueryParam(queryParam string) (float32, error) {
+	if queryParam == "" {
+		return -1, errors.New("empty float parameter")
+	}
+
+	value, err := strconv.ParseFloat(queryParam, 32)
+	if err != nil || value < 1 {
+		return -1, errors.New("invalid float parameter")
+	}
+
+	return float32(value), nil
+}

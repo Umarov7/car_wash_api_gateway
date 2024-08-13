@@ -168,7 +168,10 @@ func (h *Handler) FetchServices(c *gin.Context) {
 // @Description Searches services
 // @Tags service
 // @Security ApiKeyAuth
-// @Param data body services.Filter true "Search data"
+// @Param name query string false "Name"
+// @Param created_at query string false "Created at"
+// @Param price query float32 false "Price"
+// @Param duration query int32 false "Duration"
 // @Success 200 {object} services.SearchResp
 // @Failure 400 {object} string "Invalid data format"
 // @Failure 500 {object} string "Server error while processing request"
@@ -176,10 +179,28 @@ func (h *Handler) FetchServices(c *gin.Context) {
 func (h *Handler) SearchServices(c *gin.Context) {
 	h.Logger.Info("SearchServices handler is invoked")
 
-	var req pb.Filter
-	if err := c.ShouldBind(&req); err != nil {
-		handleError(c, h, err, "invalid data format", http.StatusBadRequest)
-		return
+	req := pb.Filter{
+		Name:      c.Query("name"),
+		CreatedAt: c.Query("created_at"),
+	}
+	priceStr := c.Query("price")
+	duration := c.Query("duration")
+
+	if priceStr != "" {
+		price, err := parseFloatQueryParam(priceStr)
+		if err != nil {
+			handleError(c, h, err, "invalid float parameter", http.StatusBadRequest)
+			return
+		}
+		req.Price = price
+	}
+	if duration != "" {
+		dur, err := parseIntQueryParam(duration)
+		if err != nil {
+			handleError(c, h, err, "invalid int parameter", http.StatusBadRequest)
+			return
+		}
+		req.Duration = dur
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), h.ContextTimeout)

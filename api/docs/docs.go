@@ -441,13 +441,22 @@ const docTemplate = `{
                 "summary": "Searches providers",
                 "parameters": [
                     {
-                        "description": "Search data",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/providers.Filter"
-                        }
+                        "type": "string",
+                        "description": "Company name",
+                        "name": "company_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Created at",
+                        "name": "created_at",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Average rating",
+                        "name": "average_rating",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -769,13 +778,28 @@ const docTemplate = `{
                 "summary": "Searches services",
                 "parameters": [
                     {
-                        "description": "Search data",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/services.Filter"
-                        }
+                        "type": "string",
+                        "description": "Name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Created at",
+                        "name": "created_at",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Price",
+                        "name": "price",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Duration",
+                        "name": "duration",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1340,20 +1364,6 @@ const docTemplate = `{
                 }
             }
         },
-        "providers.Filter": {
-            "type": "object",
-            "properties": {
-                "average_rating": {
-                    "type": "number"
-                },
-                "company_name": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                }
-            }
-        },
         "providers.Location": {
             "type": "object",
             "properties": {
@@ -1499,23 +1509,6 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "string"
-                }
-            }
-        },
-        "services.Filter": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "duration": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "number"
                 }
             }
         },

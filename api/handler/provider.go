@@ -66,7 +66,9 @@ func (h *Handler) CreateProvider(c *gin.Context) {
 // @Description Searches providers
 // @Tags provider
 // @Security ApiKeyAuth
-// @Param data body providers.Filter true "Search data"
+// @Param company_name query string false "Company name"
+// @Param created_at query string false "Created at"
+// @Param average_rating query float32 false "Average rating"
 // @Success 200 {object} providers.SearchResp
 // @Failure 400 {object} string "Invalid data format"
 // @Failure 500 {object} string "Server error while processing request"
@@ -74,16 +76,25 @@ func (h *Handler) CreateProvider(c *gin.Context) {
 func (h *Handler) SearchProviders(c *gin.Context) {
 	h.Logger.Info("SearchProviders handler is invoked")
 
-	var req pb.Filter
-	if err := c.ShouldBind(&req); err != nil {
-		handleError(c, h, err, "invalid data format", http.StatusBadRequest)
-		return
+	filter := pb.Filter{
+		CompanyName: c.Query("company_name"),
+		CreatedAt:   c.Query("created_at"),
+	}
+	avgRatingStr := c.Query("average_rating")
+
+	if avgRatingStr != "" {
+		avgRating, err := parseFloatQueryParam(avgRatingStr)
+		if err != nil {
+			handleError(c, h, err, "invalid float parameter", http.StatusBadRequest)
+			return
+		}
+		filter.AverageRating = avgRating
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), h.ContextTimeout)
 	defer cancel()
 
-	resp, err := h.Provider.SearchProviders(ctx, &req)
+	resp, err := h.Provider.SearchProviders(ctx, &filter)
 	if err != nil {
 		handleError(c, h, err, "error finding providers", http.StatusInternalServerError)
 		return

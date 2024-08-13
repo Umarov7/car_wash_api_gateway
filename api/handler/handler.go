@@ -40,6 +40,8 @@ type Handler struct {
 }
 
 func NewHandler(cfg *config.Config) *Handler {
+	kafkaBrokerAddress := cfg.KAFKA_HOST + ":" + cfg.KAFKA_PORT
+
 	return &Handler{
 		User:                     pkg.NewUserClient(cfg),
 		Provider:                 pkg.NewProvidersClient(cfg),
@@ -50,7 +52,7 @@ func NewHandler(cfg *config.Config) *Handler {
 		Notification:             pkg.NewNotificationClient(cfg),
 		Logger:                   logger.NewLogger(),
 		ContextTimeout:           time.Second * 5,
-		KafkaProducer:            producer.NewKafkaProducer([]string{cfg.KAFKA_HOST, cfg.KAFKA_PORT}),
+		KafkaProducer:            producer.NewKafkaProducer([]string{kafkaBrokerAddress}),
 		TopicBookingCreated:      cfg.KAFKA_TOPIC_BOOKING_CREATED,
 		TopicBookingUpdated:      cfg.KAFKA_TOPIC_BOOKING_UPDATED,
 		TopicBookingCancelled:    cfg.KAFKA_TOPIC_BOOKING_CANCELLED,

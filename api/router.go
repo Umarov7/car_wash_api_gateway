@@ -53,6 +53,7 @@ func NewRouter(cfg *config.Config) *gin.Engine {
 		s.DELETE("/:id", h.DeleteService)
 		s.GET("/all", h.FetchServices)
 		s.GET("/search", h.SearchServices)
+		s.GET("/popular", h.GetPopularServices)
 	}
 
 	b := api.Group("/bookings")

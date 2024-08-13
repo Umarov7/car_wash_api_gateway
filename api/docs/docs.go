@@ -1077,6 +1077,34 @@ const docTemplate = `{
                 }
             }
         },
+        "/services/popular": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Gets popular services",
+                "tags": [
+                    "service"
+                ],
+                "summary": "Gets popular services",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.SearchResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/services/search": {
             "post": {
                 "security": [
@@ -1961,6 +1989,9 @@ const docTemplate = `{
                 },
                 "price": {
                     "type": "number"
+                },
+                "total_bookings": {
+                    "type": "integer"
                 },
                 "updated_at": {
                     "type": "string"

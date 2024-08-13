@@ -247,3 +247,27 @@ func (h *Handler) SearchServices(c *gin.Context) {
 	h.Logger.Info("SearchServices handler is completed")
 	c.JSON(http.StatusOK, resp)
 }
+
+// GetPopularServices godoc
+// @Summary Gets popular services
+// @Description Gets popular services
+// @Tags service
+// @Security ApiKeyAuth
+// @Success 200 {object} services.SearchResp
+// @Failure 500 {object} string "Server error while processing request"
+// @Router /services/popular [get]
+func (h *Handler) GetPopularServices(c *gin.Context) {
+	h.Logger.Info("GetPopularServices handler is invoked")
+
+	ctx, cancel := context.WithTimeout(context.Background(), h.ContextTimeout)
+	defer cancel()
+
+	resp, err := h.Service.GetPopularServices(ctx, &pb.Void{})
+	if err != nil {
+		handleError(c, h, err, "error getting popular services", http.StatusInternalServerError)
+		return
+	}
+
+	h.Logger.Info("GetPopularServices handler is completed")
+	c.JSON(http.StatusOK, resp)
+}

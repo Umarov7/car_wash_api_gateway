@@ -41,6 +41,38 @@ func (h *Handler) CreateService(c *gin.Context) {
 	c.JSON(http.StatusCreated, resp)
 }
 
+// GetService godoc
+// @Summary Gets service
+// @Description Gets service
+// @Tags service
+// @Security ApiKeyAuth
+// @Param id path string true "Service ID"
+// @Success 200 {object} services.Service
+// @Failure 400 {object} string "Invalid data format"
+// @Failure 500 {object} string "Server error while processing request"
+// @Router /services/{id} [get]
+func (h *Handler) GetService(c *gin.Context) {
+	h.Logger.Info("GetService handler is invoked")
+
+	id := c.Param("id")
+	if id == "" {
+		handleError(c, h, nil, "invalid data format", http.StatusBadRequest)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), h.ContextTimeout)
+	defer cancel()
+
+	resp, err := h.Service.GetService(ctx, &pb.ID{Id: id})
+	if err != nil {
+		handleError(c, h, err, "error getting service", http.StatusInternalServerError)
+		return
+	}
+
+	h.Logger.Info("GetService handler is completed")
+	c.JSON(http.StatusOK, resp)
+}
+
 // UpdateService godoc
 // @Summary Updates service
 // @Description Updates service

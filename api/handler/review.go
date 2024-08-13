@@ -60,6 +60,38 @@ func (h *Handler) CreateReview(c *gin.Context) {
 	c.JSON(http.StatusCreated, "Review created")
 }
 
+// GetReview godoc
+// @Summary Gets review
+// @Description Gets review
+// @Tags review
+// @Security ApiKeyAuth
+// @Param id path string true "Review ID"
+// @Success 200 {object} reviews.Review
+// @Failure 400 {object} string "Invalid data format"
+// @Failure 500 {object} string "Server error while processing request"
+// @Router /reviews/{id} [get]
+func (h *Handler) GetReview(c *gin.Context) {
+	h.Logger.Info("GetReview handler is invoked")
+
+	id := c.Param("id")
+	if id == "" {
+		handleError(c, h, nil, "invalid data format", http.StatusBadRequest)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), h.ContextTimeout)
+	defer cancel()
+
+	resp, err := h.Review.GetReview(ctx, &pb.ID{Id: id})
+	if err != nil {
+		handleError(c, h, err, "error getting review", http.StatusInternalServerError)
+		return
+	}
+
+	h.Logger.Info("GetReview handler is completed")
+	c.JSON(http.StatusOK, resp)
+}
+
 // UpdateReview godoc
 // @Summary Update review
 // @Description Updates review

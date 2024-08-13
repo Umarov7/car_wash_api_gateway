@@ -125,6 +125,25 @@ definitions:
     - location
     - services
     type: object
+  models.ProviderUpdate:
+    properties:
+      availability:
+        items:
+          type: string
+        type: array
+      average_rating:
+        type: number
+      company_name:
+        type: string
+      description:
+        type: string
+      location:
+        $ref: '#/definitions/models.Location'
+      services:
+        items:
+          type: string
+        type: array
+    type: object
   models.ReviewCreate:
     properties:
       booking_id:
@@ -285,12 +304,28 @@ definitions:
       user_id:
         type: string
     type: object
+  providers.ProvidersList:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      providers:
+        items:
+          $ref: '#/definitions/providers.Provider'
+        type: array
+    type: object
   providers.SearchResp:
     properties:
       providers:
         items:
           $ref: '#/definitions/providers.Provider'
         type: array
+    type: object
+  providers.UpdateResp:
+    properties:
+      updated_at:
+        type: string
     type: object
   reviews.Review:
     properties:
@@ -701,7 +736,124 @@ paths:
       summary: Fetches payments
       tags:
       - payment
-  /providers:
+  /providers/{id}:
+    delete:
+      description: Deletes provider
+      parameters:
+      - description: Provider ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Provider deleted
+          schema:
+            type: string
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Deletes provider
+      tags:
+      - provider
+    get:
+      description: Gets provider
+      parameters:
+      - description: Provider ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providers.Provider'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Gets provider
+      tags:
+      - provider
+    put:
+      description: Updates provider
+      parameters:
+      - description: Provider ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated provider
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProviderUpdate'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providers.UpdateResp'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Updates provider
+      tags:
+      - provider
+  /providers/all:
+    get:
+      description: Fetches providers
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Number of items per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providers.ProvidersList'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Fetches providers
+      tags:
+      - provider
+  /providers/register:
     post:
       description: Adds a new provider
       parameters:
@@ -816,6 +968,32 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Delete review
+      tags:
+      - review
+    get:
+      description: Gets review
+      parameters:
+      - description: Review ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reviews.Review'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Gets review
       tags:
       - review
     put:
@@ -935,6 +1113,32 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Deletes service
+      tags:
+      - service
+    get:
+      description: Gets service
+      parameters:
+      - description: Service ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.Service'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Gets service
       tags:
       - service
     put:

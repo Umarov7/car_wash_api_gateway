@@ -37,7 +37,7 @@ func NewRouter(cfg *config.Config) *gin.Engine {
 
 	p := api.Group("/providers")
 	{
-		p.POST("", h.CreateProvider)
+		p.POST("/register", h.CreateProvider)
 		p.GET("/search", h.SearchProviders)
 	}
 

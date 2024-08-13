@@ -58,3 +58,12 @@ type ReviewUpdate struct {
 	Rating  int32  `json:"rating"`
 	Comment string `json:"comment"`
 }
+
+type ProviderUpdate struct {
+	CompanyName   string   `json:"company_name"`
+	Description   string   `json:"description"`
+	Services      []string `json:"services"`
+	Availability  []string `json:"availability"`
+	AverageRating float32  `json:"average_rating"`
+	Location      Location `json:"location"`
+}

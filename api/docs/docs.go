@@ -470,7 +470,57 @@ const docTemplate = `{
                 }
             }
         },
-        "/providers": {
+        "/providers/all": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Fetches providers",
+                "tags": [
+                    "provider"
+                ],
+                "summary": "Fetches providers",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of items per page",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/providers.ProvidersList"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data format",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/providers/register": {
             "post": {
                 "security": [
                     {
@@ -552,6 +602,140 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/providers.SearchResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data format",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/providers/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Gets provider",
+                "tags": [
+                    "provider"
+                ],
+                "summary": "Gets provider",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Provider ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/providers.Provider"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data format",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Updates provider",
+                "tags": [
+                    "provider"
+                ],
+                "summary": "Updates provider",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Provider ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated provider",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ProviderUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/providers.UpdateResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data format",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Deletes provider",
+                "tags": [
+                    "provider"
+                ],
+                "summary": "Deletes provider",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Provider ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Provider deleted",
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     "400": {
@@ -665,6 +849,47 @@ const docTemplate = `{
             }
         },
         "/reviews/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Gets review",
+                "tags": [
+                    "review"
+                ],
+                "summary": "Gets review",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Review ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reviews.Review"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data format",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
             "put": {
                 "security": [
                     {
@@ -913,6 +1138,47 @@ const docTemplate = `{
             }
         },
         "/services/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Gets service",
+                "tags": [
+                    "service"
+                ],
+                "summary": "Gets service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Service ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.Service"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data format",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
             "put": {
                 "security": [
                     {
@@ -1274,6 +1540,35 @@ const docTemplate = `{
                 }
             }
         },
+        "models.ProviderUpdate": {
+            "type": "object",
+            "properties": {
+                "availability": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "average_rating": {
+                    "type": "number"
+                },
+                "company_name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "location": {
+                    "$ref": "#/definitions/models.Location"
+                },
+                "services": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "models.ReviewCreate": {
             "type": "object",
             "required": [
@@ -1517,6 +1812,23 @@ const docTemplate = `{
                 }
             }
         },
+        "providers.ProvidersList": {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "providers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/providers.Provider"
+                    }
+                }
+            }
+        },
         "providers.SearchResp": {
             "type": "object",
             "properties": {
@@ -1525,6 +1837,14 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/providers.Provider"
                     }
+                }
+            }
+        },
+        "providers.UpdateResp": {
+            "type": "object",
+            "properties": {
+                "updated_at": {
+                    "type": "string"
                 }
             }
         },

@@ -11,7 +11,7 @@ import (
 func CasbinEnforcer(cfg *config.Config) (*casbin.Enforcer, error) {
 	db, err := ConnectDB(cfg)
 	if err != nil {
-		log.Fatalf("failed to connect to the database: %v", err)
+		log.Printf("failed to connect to the database: %v", err)
 		return nil, err
 	}
 	defer db.Close()
@@ -35,10 +35,18 @@ func CasbinEnforcer(cfg *config.Config) (*casbin.Enforcer, error) {
 	}
 
 	policies := [][]string{
-		{"admin", "/*", "*"},
-		{"provider", "/*", "*"},
-		{"customer", "/*", "*"},
+		{"admin", "/car-wash/*", "*"},
+
+		{"provider", "/car-wash/users/*", "deny"},
+		{"provider", "/car-wash/reviews/all", "allow"},
+		{"provider", "/car-wash/reviews/*", "deny"},
+		{"provider", "/car-wash/*", "*"},
+
+		{"customer", "/car-wash/*", "GET"},
+		{"customer", "/car-wash/users/profile", "PUT"},
 	}
+
+	enforcer.ClearPolicy()
 
 	_, err = enforcer.AddPolicies(policies)
 	if err != nil {

@@ -74,5 +74,11 @@ func NewRouter(cfg *config.Config) *gin.Engine {
 		r.GET("/all", h.FetchReviews)
 	}
 
+	n := api.Group("/notifications")
+	{
+		n.POST("", h.CreateNotification)
+		n.GET("/:id", h.GetNotification)
+	}
+
 	return router
 }

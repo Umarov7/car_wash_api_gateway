@@ -1,0 +1,1054 @@
+basePath: /car-wash
+definitions:
+  bookings.Booking:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      location:
+        $ref: '#/definitions/bookings.Location'
+      provider_id:
+        type: string
+      scheduled_time:
+        type: string
+      service_id:
+        type: string
+      status:
+        type: string
+      total_price:
+        type: number
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  bookings.BookingsList:
+    properties:
+      bookings:
+        items:
+          $ref: '#/definitions/bookings.Booking'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+    type: object
+  bookings.CreateResp:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+    type: object
+  bookings.Location:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+    type: object
+  bookings.UpdateResp:
+    properties:
+      updated_at:
+        type: string
+    type: object
+  models.BookingCreate:
+    properties:
+      location:
+        $ref: '#/definitions/models.Location'
+      provider_id:
+        type: string
+      scheduled_time:
+        type: string
+      service_id:
+        type: string
+      status:
+        type: string
+      total_price:
+        type: number
+    required:
+    - location
+    - provider_id
+    - scheduled_time
+    - service_id
+    - status
+    - total_price
+    type: object
+  models.BookingUpdate:
+    properties:
+      location:
+        $ref: '#/definitions/models.Location'
+      scheduled_time:
+        type: string
+      status:
+        type: string
+      total_price:
+        type: number
+    type: object
+  models.Location:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+    required:
+    - address
+    - city
+    - country
+    - latitude
+    - longitude
+    type: object
+  models.ProviderCreate:
+    properties:
+      availability:
+        items:
+          type: string
+        type: array
+      average_rating:
+        type: number
+      company_name:
+        type: string
+      description:
+        type: string
+      location:
+        $ref: '#/definitions/models.Location'
+      services:
+        items:
+          type: string
+        type: array
+    required:
+    - availability
+    - average_rating
+    - company_name
+    - description
+    - location
+    - services
+    type: object
+  models.ReviewCreate:
+    properties:
+      booking_id:
+        type: string
+      comment:
+        type: string
+      provider_id:
+        type: string
+      rating:
+        type: integer
+    required:
+    - booking_id
+    - comment
+    - provider_id
+    - rating
+    type: object
+  models.ReviewUpdate:
+    properties:
+      comment:
+        type: string
+      rating:
+        type: integer
+    type: object
+  models.ServiceUpdate:
+    properties:
+      description:
+        type: string
+      duration:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+  models.UserUpdate:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - phone_number
+    type: object
+  payments.CreateResp:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+    type: object
+  payments.NewPayment:
+    properties:
+      amount:
+        type: number
+      booking_id:
+        type: string
+      payment_method:
+        type: string
+      status:
+        type: string
+      transaction_id:
+        type: string
+    type: object
+  payments.Payment:
+    properties:
+      amount:
+        type: number
+      booking_id:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      payment_method:
+        type: string
+      status:
+        type: string
+      transaction_id:
+        type: string
+    type: object
+  payments.PaymentsList:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      payments:
+        items:
+          $ref: '#/definitions/payments.Payment'
+        type: array
+    type: object
+  providers.CreateResp:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+    type: object
+  providers.Filter:
+    properties:
+      average_rating:
+        type: number
+      company_name:
+        type: string
+      created_at:
+        type: string
+    type: object
+  providers.Location:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+    type: object
+  providers.Provider:
+    properties:
+      availability:
+        items:
+          type: string
+        type: array
+      average_rating:
+        type: number
+      company_name:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      location:
+        $ref: '#/definitions/providers.Location'
+      services:
+        items:
+          type: string
+        type: array
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  providers.SearchResp:
+    properties:
+      providers:
+        items:
+          $ref: '#/definitions/providers.Provider'
+        type: array
+    type: object
+  reviews.CreateResp:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+    type: object
+  reviews.Review:
+    properties:
+      booking_id:
+        type: string
+      comment:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      provider_id:
+        type: string
+      rating:
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  reviews.ReviewsList:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      reviews:
+        items:
+          $ref: '#/definitions/reviews.Review'
+        type: array
+    type: object
+  reviews.UpdateResp:
+    properties:
+      updated_at:
+        type: string
+    type: object
+  services.CreateResp:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+    type: object
+  services.Filter:
+    properties:
+      created_at:
+        type: string
+      duration:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+  services.NewService:
+    properties:
+      description:
+        type: string
+      duration:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+  services.SearchResp:
+    properties:
+      services:
+        items:
+          $ref: '#/definitions/services.Service'
+        type: array
+    type: object
+  services.Service:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      duration:
+        type: integer
+      id:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      updated_at:
+        type: string
+    type: object
+  services.ServicesList:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      services:
+        items:
+          $ref: '#/definitions/services.Service'
+        type: array
+    type: object
+  services.UpdateResp:
+    properties:
+      updated_at:
+        type: string
+    type: object
+  user.Profile:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  user.UpdateResp:
+    properties:
+      id:
+        type: string
+      updated_at:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API Gateway of On-Demand Car Wash Service
+  title: On-Demand Car Wash Service
+  version: "1.0"
+paths:
+  /bookings:
+    post:
+      description: Adds a new booking
+      parameters:
+      - description: New booking
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.BookingCreate'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/bookings.CreateResp'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Creates booking
+      tags:
+      - booking
+  /bookings/{id}:
+    delete:
+      description: Cancels booking
+      parameters:
+      - description: Booking ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Booking canceled successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Cancels booking
+      tags:
+      - booking
+    get:
+      description: Gets booking
+      parameters:
+      - description: Booking ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/bookings.Booking'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Gets booking
+      tags:
+      - booking
+    put:
+      description: Updates booking
+      parameters:
+      - description: Booking ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: New booking data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.BookingUpdate'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/bookings.UpdateResp'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Updates booking
+      tags:
+      - booking
+  /bookings/all:
+    get:
+      description: Fetches bookings
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Number of items per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/bookings.BookingsList'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Fetches bookings
+      tags:
+      - booking
+  /payments:
+    post:
+      description: Adds a new payment
+      parameters:
+      - description: New payment
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/payments.NewPayment'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/payments.CreateResp'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Creates payment
+      tags:
+      - payment
+  /payments/{id}:
+    get:
+      description: Gets payment
+      parameters:
+      - description: Payment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payments.Payment'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Gets payment
+      tags:
+      - payment
+  /payments/all:
+    get:
+      description: Fetches payments
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Number of items per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payments.PaymentsList'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Fetches payments
+      tags:
+      - payment
+  /providers:
+    post:
+      description: Adds a new provider
+      parameters:
+      - description: New provider
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProviderCreate'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/providers.CreateResp'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Creates provider
+      tags:
+      - provider
+  /providers/search:
+    get:
+      description: Searches providers
+      parameters:
+      - description: Search data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/providers.Filter'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/providers.SearchResp'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Searches providers
+      tags:
+      - provider
+  /reviews:
+    post:
+      description: Creates a new review
+      parameters:
+      - description: Review
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.ReviewCreate'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/reviews.CreateResp'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Create review
+      tags:
+      - review
+  /reviews/{id}:
+    delete:
+      description: Deletes review
+      parameters:
+      - description: Review ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Review deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete review
+      tags:
+      - review
+    put:
+      description: Updates review
+      parameters:
+      - description: Review ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Review
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.ReviewUpdate'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reviews.UpdateResp'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update review
+      tags:
+      - review
+  /reviews/all:
+    get:
+      description: Fetches reviews
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Number of items per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reviews.ReviewsList'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Fetches reviews
+      tags:
+      - review
+  /services:
+    post:
+      description: Adds a new service
+      parameters:
+      - description: New service
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/services.NewService'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/services.CreateResp'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Creates service
+      tags:
+      - service
+  /services/{id}:
+    delete:
+      description: Deletes service
+      parameters:
+      - description: Service ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Service deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Deletes service
+      tags:
+      - service
+    put:
+      description: Updates service
+      parameters:
+      - description: Service ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: New service data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.ServiceUpdate'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.UpdateResp'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Updates service
+      tags:
+      - service
+  /services/all:
+    get:
+      description: Fetches services
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Number of items per page
+        in: query
+        name: limit
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.ServicesList'
+        "400":
+          description: Invalid pagination parameter
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Fetches services
+      tags:
+      - service
+  /services/search:
+    post:
+      description: Searches services
+      parameters:
+      - description: Search data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/services.Filter'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.SearchResp'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Searches services
+      tags:
+      - service
+  /users/profile:
+    get:
+      description: Retrieves user profile
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.Profile'
+        "401":
+          description: Invalid user
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Gets profile
+      tags:
+      - user
+    put:
+      description: Updates user profile
+      parameters:
+      - description: New user data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserUpdate'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UpdateResp'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "401":
+          description: Invalid user
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Updates profile
+      tags:
+      - user
+schemes:
+- http
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

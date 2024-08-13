@@ -11,6 +11,7 @@ import (
 	"api-gateway/pkg"
 	"api-gateway/pkg/logger"
 	"log/slog"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -45,4 +46,32 @@ func handleError(c *gin.Context, h *Handler, err error, msg string, code int) {
 	er := errors.Wrap(err, msg).Error()
 	c.AbortWithStatusJSON(code, gin.H{"error": er})
 	h.Logger.Error(er)
+
+}
+
+func getUserID(c *gin.Context) (string, error) {
+	id, ok := c.Get("user_id")
+	if !ok {
+		return "", errors.New("user id not found")
+	}
+
+	idStr, ok := id.(string)
+	if !ok {
+		return "", errors.New("invalid user id")
+	}
+
+	return idStr, nil
+}
+
+func parseIntQueryParam(queryParam string) (int32, error) {
+	if queryParam == "" {
+		return -1, errors.New("empty integer parameter")
+	}
+
+	value, err := strconv.Atoi(queryParam)
+	if err != nil || value < 1 {
+		return -1, errors.New("invalid integer parameter")
+	}
+
+	return int32(value), nil
 }

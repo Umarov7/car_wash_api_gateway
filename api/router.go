@@ -38,12 +38,17 @@ func NewRouter(cfg *config.Config) *gin.Engine {
 	p := api.Group("/providers")
 	{
 		p.POST("/register", h.CreateProvider)
+		p.GET("/:id", h.GetProvider)
+		p.PUT("/:id", h.UpdateProvider)
+		p.DELETE("/:id", h.DeleteProvider)
+		p.GET("/all", h.FetchProviders)
 		p.GET("/search", h.SearchProviders)
 	}
 
 	s := api.Group("/services")
 	{
 		s.POST("", h.CreateService)
+		s.GET("/:id", h.GetService)
 		s.PUT("/:id", h.UpdateService)
 		s.DELETE("/:id", h.DeleteService)
 		s.GET("/all", h.FetchServices)
@@ -69,6 +74,7 @@ func NewRouter(cfg *config.Config) *gin.Engine {
 	r := api.Group("/reviews")
 	{
 		r.POST("", h.CreateReview)
+		r.GET("/:id", h.GetReview)
 		r.PUT("/:id", h.UpdateReview)
 		r.DELETE("/:id", h.DeleteReview)
 		r.GET("/all", h.FetchReviews)

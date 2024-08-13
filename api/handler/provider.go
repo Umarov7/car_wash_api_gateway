@@ -101,7 +101,7 @@ func (h *Handler) GetProvider(c *gin.Context) {
 // @Param id path string true "Provider ID"
 // @Param data body models.ProviderUpdate true "Updated provider"
 // @Success 200 {object} providers.UpdateResp
-// @Failure 400 {object} string "Invalid data format"	
+// @Failure 400 {object} string "Invalid data format"
 // @Failure 500 {object} string "Server error while processing request"
 // @Router /providers/{id} [put]
 func (h *Handler) UpdateProvider(c *gin.Context) {

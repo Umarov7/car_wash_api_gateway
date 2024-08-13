@@ -39,8 +39,18 @@ func CasbinEnforcer(cfg *config.Config) (*casbin.Enforcer, error) {
 	policies := [][]string{
 		{"admin", "/car-wash/*", "*", "allow"},
 		{"provider", "/car-wash/*", "*", "allow"},
-		{"customer", "/car-wash/users/profile", "*", "allow"},
-		{"customer", "/car-wash/*", "GET", "allow"},
+
+		{"customer", "/car-wash/providers", "POST", "deny"},
+		{"customer", "/car-wash/providers/*", "PUT", "deny"},
+		{"customer", "/car-wash/providers/*", "DELETE", "deny"},
+
+		{"customer", "/car-wash/services", "POST", "deny"},
+		{"customer", "/car-wash/services/*", "PUT", "deny"},
+		{"customer", "/car-wash/services/*", "DELETE", "deny"},
+
+		{"customer", "/car-wash/notifications", "POST", "deny"},
+
+		{"customer", "/car-wash/*", "*", "allow"},
 	}
 
 	_, err = enforcer.AddPolicies(policies)

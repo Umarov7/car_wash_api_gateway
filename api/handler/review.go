@@ -4,6 +4,7 @@ import (
 	pb "api-gateway/genproto/reviews"
 	"api-gateway/models"
 	"context"
+	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,7 +16,7 @@ import (
 // @Tags review
 // @Security ApiKeyAuth
 // @Param data body models.ReviewCreate true "Review"
-// @Success 201 {object} reviews.CreateResp
+// @Success 201 {object} string "Review created"
 // @Failure 400 {object} string "Invalid data format"
 // @Failure 500 {object} string "Server error while processing request"
 // @Router /reviews [post]
@@ -34,10 +35,7 @@ func (h *Handler) CreateReview(c *gin.Context) {
 		return
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), h.ContextTimeout)
-	defer cancel()
-
-	resp, err := h.Review.CreateReview(ctx, &pb.NewReview{
+	message, err := json.Marshal(pb.NewReview{
 		UserId:     id,
 		BookingId:  req.BookingID,
 		ProviderId: req.ProviderID,
@@ -45,12 +43,21 @@ func (h *Handler) CreateReview(c *gin.Context) {
 		Comment:    req.Comment,
 	})
 	if err != nil {
+		handleError(c, h, err, "error serializing review", http.StatusInternalServerError)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), h.ContextTimeout)
+	defer cancel()
+
+	err = h.KafkaProducer.Produce(ctx, h.TopicReviewCreated, []byte(message))
+	if err != nil {
 		handleError(c, h, err, "error creating review", http.StatusInternalServerError)
 		return
 	}
 
 	h.Logger.Info("CreateReview handler is completed")
-	c.JSON(http.StatusCreated, resp)
+	c.JSON(http.StatusCreated, "Review created")
 }
 
 // UpdateReview godoc

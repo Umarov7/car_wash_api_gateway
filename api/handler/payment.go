@@ -3,6 +3,7 @@ package handler
 import (
 	pb "api-gateway/genproto/payments"
 	"context"
+	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +15,7 @@ import (
 // @Tags payment
 // @Security ApiKeyAuth
 // @Param data body payments.NewPayment true "New payment"
-// @Success 201 {object} payments.CreateResp
+// @Success 201 {object} string "Payment created"
 // @Failure 400 {object} string "Invalid data format"
 // @Failure 500 {object} string "Server error while processing request"
 // @Router /payments [post]
@@ -27,17 +28,23 @@ func (h *Handler) CreatePayment(c *gin.Context) {
 		return
 	}
 
+	message, err := json.Marshal(&req)
+	if err != nil {
+		handleError(c, h, err, "error serializing payment", http.StatusInternalServerError)
+		return
+	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), h.ContextTimeout)
 	defer cancel()
 
-	resp, err := h.Payment.CreatePayment(ctx, &req)
+	err = h.KafkaProducer.Produce(ctx, h.TopicPaymentCreated, []byte(message))
 	if err != nil {
 		handleError(c, h, err, "error creating payment", http.StatusInternalServerError)
 		return
 	}
 
 	h.Logger.Info("CreatePayment handler is completed")
-	c.JSON(http.StatusCreated, resp)
+	c.JSON(http.StatusCreated, "Payment created")
 }
 
 // GetPayment godoc

@@ -3,11 +3,13 @@ package handler
 import (
 	"api-gateway/config"
 	pbb "api-gateway/genproto/bookings"
+	pbn "api-gateway/genproto/notifications"
 	pbpa "api-gateway/genproto/payments"
 	pbp "api-gateway/genproto/providers"
 	pbr "api-gateway/genproto/reviews"
 	pbs "api-gateway/genproto/services"
 	pbu "api-gateway/genproto/user"
+	"api-gateway/kafka/producer"
 	"api-gateway/pkg"
 	"api-gateway/pkg/logger"
 	"log/slog"
@@ -19,26 +21,42 @@ import (
 )
 
 type Handler struct {
-	User           pbu.UserClient
-	Provider       pbp.ProvidersClient
-	Service        pbs.ServicesClient
-	Booking        pbb.BookingsClient
-	Payment        pbpa.PaymentsClient
-	Review         pbr.ReviewsClient
-	Logger         *slog.Logger
-	ContextTimeout time.Duration
+	User                     pbu.UserClient
+	Provider                 pbp.ProvidersClient
+	Service                  pbs.ServicesClient
+	Booking                  pbb.BookingsClient
+	Payment                  pbpa.PaymentsClient
+	Review                   pbr.ReviewsClient
+	Notification             pbn.NotificationsClient
+	Logger                   *slog.Logger
+	ContextTimeout           time.Duration
+	KafkaProducer            producer.IKafkaProducer
+	TopicBookingCreated      string
+	TopicBookingUpdated      string
+	TopicBookingCancelled    string
+	TopicPaymentCreated      string
+	TopicReviewCreated       string
+	TopicNotificationCreated string
 }
 
 func NewHandler(cfg *config.Config) *Handler {
 	return &Handler{
-		User:           pkg.NewUserClient(cfg),
-		Provider:       pkg.NewProvidersClient(cfg),
-		Service:        pkg.NewServicesClient(cfg),
-		Booking:        pkg.NewBookingsClient(cfg),
-		Payment:        pkg.NewPaymentsClient(cfg),
-		Review:         pkg.NewReviewsClient(cfg),
-		Logger:         logger.NewLogger(),
-		ContextTimeout: time.Second * 5,
+		User:                     pkg.NewUserClient(cfg),
+		Provider:                 pkg.NewProvidersClient(cfg),
+		Service:                  pkg.NewServicesClient(cfg),
+		Booking:                  pkg.NewBookingsClient(cfg),
+		Payment:                  pkg.NewPaymentsClient(cfg),
+		Review:                   pkg.NewReviewsClient(cfg),
+		Notification:             pkg.NewNotificationClient(cfg),
+		Logger:                   logger.NewLogger(),
+		ContextTimeout:           time.Second * 5,
+		KafkaProducer:            producer.NewKafkaProducer([]string{cfg.KAFKA_HOST, cfg.KAFKA_PORT}),
+		TopicBookingCreated:      cfg.KAFKA_TOPIC_BOOKING_CREATED,
+		TopicBookingUpdated:      cfg.KAFKA_TOPIC_BOOKING_UPDATED,
+		TopicBookingCancelled:    cfg.KAFKA_TOPIC_BOOKING_CANCELLED,
+		TopicPaymentCreated:      cfg.KAFKA_TOPIC_PAYMENT_CREATED,
+		TopicReviewCreated:       cfg.KAFKA_TOPIC_REVIEW_CREATED,
+		TopicNotificationCreated: cfg.KAFKA_TOPIC_NOTIFICATION_CREATED,
 	}
 }
 

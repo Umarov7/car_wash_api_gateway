@@ -3,6 +3,7 @@ package pkg
 import (
 	"api-gateway/config"
 	pbb "api-gateway/genproto/bookings"
+	pbn "api-gateway/genproto/notifications"
 	pbpa "api-gateway/genproto/payments"
 	pbp "api-gateway/genproto/providers"
 	pbr "api-gateway/genproto/reviews"
@@ -85,4 +86,16 @@ func NewReviewsClient(cfg *config.Config) pbr.ReviewsClient {
 	}
 
 	return pbr.NewReviewsClient(conn)
+}
+
+func NewNotificationClient(cfg *config.Config) pbn.NotificationsClient {
+	conn, err := grpc.NewClient(cfg.BOOKING_SERVICE_PORT,
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
+	if err != nil {
+		log.Println(errors.Wrap(err, "failed to connect to the address"))
+		return nil
+	}
+
+	return pbn.NewNotificationsClient(conn)
 }

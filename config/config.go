@@ -9,15 +9,23 @@ import (
 )
 
 type Config struct {
-	HTTP_PORT            string
-	AUTH_SERVICE_PORT    string
-	BOOKING_SERVICE_PORT string
-	DB_HOST              string
-	DB_PORT              int
-	DB_USER              string
-	DB_PASSWORD          string
-	DB_NAME              string
-	ACCESS_TOKEN         string
+	HTTP_PORT                        string
+	AUTH_SERVICE_PORT                string
+	BOOKING_SERVICE_PORT             string
+	DB_HOST                          string
+	DB_PORT                          int
+	DB_USER                          string
+	DB_PASSWORD                      string
+	DB_NAME                          string
+	ACCESS_TOKEN                     string
+	KAFKA_HOST                       string
+	KAFKA_PORT                       string
+	KAFKA_TOPIC_BOOKING_CREATED      string
+	KAFKA_TOPIC_BOOKING_UPDATED      string
+	KAFKA_TOPIC_BOOKING_CANCELLED    string
+	KAFKA_TOPIC_PAYMENT_CREATED      string
+	KAFKA_TOPIC_REVIEW_CREATED       string
+	KAFKA_TOPIC_NOTIFICATION_CREATED string
 }
 
 func Load() *Config {
@@ -39,6 +47,16 @@ func Load() *Config {
 	cfg.DB_NAME = cast.ToString(coalesce("DB_NAME", "postgres"))
 
 	cfg.ACCESS_TOKEN = cast.ToString(coalesce("ACCESS_TOKEN", "ACCESS_TOKEN"))
+
+	cfg.KAFKA_HOST = cast.ToString(coalesce("KAFKA_HOST", "localhost"))
+	cfg.KAFKA_PORT = cast.ToString(coalesce("KAFKA_PORT", "9092"))
+
+	cfg.KAFKA_TOPIC_BOOKING_CREATED = cast.ToString(coalesce("KAFKA_TOPIC_BOOKING_CREATED", "car-wash:booking_created"))
+	cfg.KAFKA_TOPIC_BOOKING_UPDATED = cast.ToString(coalesce("KAFKA_TOPIC_BOOKING_UPDATED", "car-wash:booking_updated"))
+	cfg.KAFKA_TOPIC_BOOKING_CANCELLED = cast.ToString(coalesce("KAFKA_TOPIC_BOOKING_CANCELLED", "car-wash:booking_cancelled"))
+	cfg.KAFKA_TOPIC_PAYMENT_CREATED = cast.ToString(coalesce("KAFKA_TOPIC_PAYMENT_CREATED", "car-wash:payment_created"))
+	cfg.KAFKA_TOPIC_REVIEW_CREATED = cast.ToString(coalesce("KAFKA_TOPIC_REVIEW_CREATED", "car-wash:review_created"))
+	cfg.KAFKA_TOPIC_NOTIFICATION_CREATED = cast.ToString(coalesce("KAFKA_TOPIC_NOTIFICATION_CREATED", "car-wash:notification_created"))
 
 	return cfg
 }

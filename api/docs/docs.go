@@ -40,9 +40,9 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "201": {
-                        "description": "Created",
+                        "description": "Booking created",
                         "schema": {
-                            "$ref": "#/definitions/bookings.CreateResp"
+                            "type": "string"
                         }
                     },
                     "400": {
@@ -183,9 +183,9 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Booking updated",
                         "schema": {
-                            "$ref": "#/definitions/bookings.UpdateResp"
+                            "type": "string"
                         }
                     },
                     "400": {
@@ -224,9 +224,97 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Booking canceled successfully",
+                        "description": "Booking canceled",
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data format",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/notifications": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Adds a new notification",
+                "tags": [
+                    "notification"
+                ],
+                "summary": "Creates notification",
+                "parameters": [
+                    {
+                        "description": "Receiver ID, Title and Message",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/notifications.NewNotification"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Notification created",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data format",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/notifications/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Gets notification",
+                "tags": [
+                    "notification"
+                ],
+                "summary": "Gets notification",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Notification ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/notifications.Notification"
                         }
                     },
                     "400": {
@@ -269,9 +357,9 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "201": {
-                        "description": "Created",
+                        "description": "Payment created",
                         "schema": {
-                            "$ref": "#/definitions/payments.CreateResp"
+                            "type": "string"
                         }
                     },
                     "400": {
@@ -506,9 +594,9 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "201": {
-                        "description": "Created",
+                        "description": "Review created",
                         "schema": {
-                            "$ref": "#/definitions/reviews.CreateResp"
+                            "type": "string"
                         }
                     },
                     "400": {
@@ -1054,17 +1142,6 @@ const docTemplate = `{
                 }
             }
         },
-        "bookings.CreateResp": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                }
-            }
-        },
         "bookings.Location": {
             "type": "object",
             "properties": {
@@ -1082,14 +1159,6 @@ const docTemplate = `{
                 },
                 "longitude": {
                     "type": "number"
-                }
-            }
-        },
-        "bookings.UpdateResp": {
-            "type": "object",
-            "properties": {
-                "updated_at": {
-                    "type": "string"
                 }
             }
         },
@@ -1279,13 +1348,36 @@ const docTemplate = `{
                 }
             }
         },
-        "payments.CreateResp": {
+        "notifications.NewNotification": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "notifications.Notification": {
             "type": "object",
             "properties": {
                 "created_at": {
                     "type": "string"
                 },
                 "id": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "user_id": {
                     "type": "string"
                 }
             }
@@ -1433,17 +1525,6 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/providers.Provider"
                     }
-                }
-            }
-        },
-        "reviews.CreateResp": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
                 }
             }
         },

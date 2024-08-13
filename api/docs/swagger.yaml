@@ -34,13 +34,6 @@ definitions:
       page:
         type: integer
     type: object
-  bookings.CreateResp:
-    properties:
-      created_at:
-        type: string
-      id:
-        type: string
-    type: object
   bookings.Location:
     properties:
       address:
@@ -53,11 +46,6 @@ definitions:
         type: number
       longitude:
         type: number
-    type: object
-  bookings.UpdateResp:
-    properties:
-      updated_at:
-        type: string
     type: object
   models.BookingCreate:
     properties:
@@ -187,11 +175,26 @@ definitions:
     - last_name
     - phone_number
     type: object
-  payments.CreateResp:
+  notifications.NewNotification:
+    properties:
+      message:
+        type: string
+      title:
+        type: string
+      user_id:
+        type: string
+    type: object
+  notifications.Notification:
     properties:
       created_at:
         type: string
       id:
+        type: string
+      message:
+        type: string
+      title:
+        type: string
+      user_id:
         type: string
     type: object
   payments.NewPayment:
@@ -288,13 +291,6 @@ definitions:
         items:
           $ref: '#/definitions/providers.Provider'
         type: array
-    type: object
-  reviews.CreateResp:
-    properties:
-      created_at:
-        type: string
-      id:
-        type: string
     type: object
   reviews.Review:
     properties:
@@ -430,9 +426,9 @@ paths:
           $ref: '#/definitions/models.BookingCreate'
       responses:
         "201":
-          description: Created
+          description: Booking created
           schema:
-            $ref: '#/definitions/bookings.CreateResp'
+            type: string
         "400":
           description: Invalid data format
           schema:
@@ -457,7 +453,7 @@ paths:
         type: string
       responses:
         "200":
-          description: Booking canceled successfully
+          description: Booking canceled
           schema:
             type: string
         "400":
@@ -515,9 +511,9 @@ paths:
           $ref: '#/definitions/models.BookingUpdate'
       responses:
         "200":
-          description: OK
+          description: Booking updated
           schema:
-            $ref: '#/definitions/bookings.UpdateResp'
+            type: string
         "400":
           description: Invalid data format
           schema:
@@ -563,6 +559,61 @@ paths:
       summary: Fetches bookings
       tags:
       - booking
+  /notifications:
+    post:
+      description: Adds a new notification
+      parameters:
+      - description: Receiver ID, Title and Message
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/notifications.NewNotification'
+      responses:
+        "201":
+          description: Notification created
+          schema:
+            type: string
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Creates notification
+      tags:
+      - notification
+  /notifications/{id}:
+    get:
+      description: Gets notification
+      parameters:
+      - description: Notification ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/notifications.Notification'
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Gets notification
+      tags:
+      - notification
   /payments:
     post:
       description: Adds a new payment
@@ -575,9 +626,9 @@ paths:
           $ref: '#/definitions/payments.NewPayment'
       responses:
         "201":
-          description: Created
+          description: Payment created
           schema:
-            $ref: '#/definitions/payments.CreateResp'
+            type: string
         "400":
           description: Invalid data format
           schema:
@@ -724,9 +775,9 @@ paths:
           $ref: '#/definitions/models.ReviewCreate'
       responses:
         "201":
-          description: Created
+          description: Review created
           schema:
-            $ref: '#/definitions/reviews.CreateResp'
+            type: string
         "400":
           description: Invalid data format
           schema:

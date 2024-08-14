@@ -51,7 +51,7 @@ func NewHandler(cfg *config.Config) *Handler {
 		Review:                   pkg.NewReviewsClient(cfg),
 		Notification:             pkg.NewNotificationClient(cfg),
 		Logger:                   logger.NewLogger(),
-		ContextTimeout:           time.Second * 5,
+		ContextTimeout:           time.Second * 10,
 		KafkaProducer:            producer.NewKafkaProducer([]string{kafkaBrokerAddress}),
 		TopicBookingCreated:      cfg.KAFKA_TOPIC_BOOKING_CREATED,
 		TopicBookingUpdated:      cfg.KAFKA_TOPIC_BOOKING_UPDATED,

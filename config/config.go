@@ -36,9 +36,9 @@ func Load() *Config {
 
 	cfg := &Config{}
 
-	cfg.HTTP_PORT = cast.ToString(coalesce("HTTP_PORT", ":8080"))
-	cfg.AUTH_SERVICE_PORT = cast.ToString(coalesce("AUTH_SERVICE_PORT", ":8081"))
-	cfg.BOOKING_SERVICE_PORT = cast.ToString(coalesce("BOOKING_SERVICE_PORT", ":8082"))
+	cfg.HTTP_PORT = cast.ToString(coalesce("HTTP_PORT", "api-gateway:8080"))
+	cfg.AUTH_SERVICE_PORT = cast.ToString(coalesce("AUTH_SERVICE_PORT", "8081"))
+	cfg.BOOKING_SERVICE_PORT = cast.ToString(coalesce("BOOKING_SERVICE_PORT", "8082"))
 
 	cfg.DB_HOST = cast.ToString(coalesce("DB_HOST", "postgres"))
 	cfg.DB_PORT = cast.ToInt(coalesce("DB_PORT", 5432))

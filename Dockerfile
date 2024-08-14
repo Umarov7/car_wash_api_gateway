@@ -14,6 +14,7 @@ FROM alpine:latest
 WORKDIR /app
 
 COPY --from=builder /app/myapp .
+COPY --from=builder /app/casbin/model.conf ./internal/config/
 COPY --from=builder /app/.env .
 
 EXPOSE 8080

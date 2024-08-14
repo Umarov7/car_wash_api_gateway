@@ -1100,7 +1100,7 @@ const docTemplate = `{
             }
         },
         "/services/search": {
-            "post": {
+            "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []

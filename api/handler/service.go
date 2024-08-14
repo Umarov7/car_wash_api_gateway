@@ -206,7 +206,7 @@ func (h *Handler) FetchServices(c *gin.Context) {
 // @Success 200 {object} services.SearchResp
 // @Failure 400 {object} string "Invalid data format"
 // @Failure 500 {object} string "Server error while processing request"
-// @Router /services/search [post]
+// @Router /services/search [get]
 func (h *Handler) SearchServices(c *gin.Context) {
 	h.Logger.Info("SearchServices handler is invoked")
 

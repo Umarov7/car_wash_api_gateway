@@ -1221,7 +1221,7 @@ paths:
       tags:
       - service
   /services/search:
-    post:
+    get:
       description: Searches services
       parameters:
       - description: Name

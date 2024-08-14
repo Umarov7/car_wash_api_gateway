@@ -40,7 +40,7 @@ func Load() *Config {
 	cfg.AUTH_SERVICE_PORT = cast.ToString(coalesce("AUTH_SERVICE_PORT", ":8081"))
 	cfg.BOOKING_SERVICE_PORT = cast.ToString(coalesce("BOOKING_SERVICE_PORT", ":8082"))
 
-	cfg.DB_HOST = cast.ToString(coalesce("DB_HOST", "localhost"))
+	cfg.DB_HOST = cast.ToString(coalesce("DB_HOST", "postgres"))
 	cfg.DB_PORT = cast.ToInt(coalesce("DB_PORT", 5432))
 	cfg.DB_USER = cast.ToString(coalesce("DB_USER", "postgres"))
 	cfg.DB_PASSWORD = cast.ToString(coalesce("DB_PASSWORD", "password"))

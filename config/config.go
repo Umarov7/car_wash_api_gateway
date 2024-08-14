@@ -48,7 +48,7 @@ func Load() *Config {
 
 	cfg.ACCESS_TOKEN = cast.ToString(coalesce("ACCESS_TOKEN", "ACCESS_TOKEN"))
 
-	cfg.KAFKA_HOST = cast.ToString(coalesce("KAFKA_HOST", "localhost"))
+	cfg.KAFKA_HOST = cast.ToString(coalesce("KAFKA_HOST", "kafka"))
 	cfg.KAFKA_PORT = cast.ToString(coalesce("KAFKA_PORT", "9092"))
 
 	cfg.KAFKA_TOPIC_BOOKING_CREATED = cast.ToString(coalesce("KAFKA_TOPIC_BOOKING_CREATED", "car-wash.booking_created"))

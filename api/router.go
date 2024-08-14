@@ -61,7 +61,7 @@ func NewRouter(cfg *config.Config) *gin.Engine {
 		b.POST("", h.CreateBooking)
 		b.GET("/:id", h.GetBooking)
 		b.PUT("/:id", h.UpdateBooking)
-		b.DELETE("/:id", h.CancelBooking)
+		b.PUT("/:id", h.CancelBooking)
 		b.GET("/all", h.FetchBookings)
 	}
 

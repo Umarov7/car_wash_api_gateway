@@ -166,7 +166,7 @@ func (h *Handler) UpdateBooking(c *gin.Context) {
 // @Success 200 {object} string "Booking canceled"
 // @Failure 400 {object} string "Invalid data format"
 // @Failure 500 {object} string "Server error while processing request"
-// @Router /bookings/{id} [delete]
+// @Router /bookings/{id} [put]
 func (h *Handler) CancelBooking(c *gin.Context) {
 	h.Logger.Info("CancelBooking handler is invoked")
 

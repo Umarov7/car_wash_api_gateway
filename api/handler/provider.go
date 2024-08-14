@@ -226,7 +226,6 @@ func (h *Handler) FetchProviders(c *gin.Context) {
 // @Tags provider
 // @Security ApiKeyAuth
 // @Param company_name query string false "Company name"
-// @Param created_at query string false "Created at"
 // @Param average_rating query float32 false "Average rating"
 // @Success 200 {object} providers.SearchResp
 // @Failure 400 {object} string "Invalid data format"
@@ -235,10 +234,7 @@ func (h *Handler) FetchProviders(c *gin.Context) {
 func (h *Handler) SearchProviders(c *gin.Context) {
 	h.Logger.Info("SearchProviders handler is invoked")
 
-	filter := pb.Filter{
-		CompanyName: c.Query("company_name"),
-		CreatedAt:   c.Query("created_at"),
-	}
+	filter := pb.Filter{CompanyName: c.Query("company_name")}
 	avgRatingStr := c.Query("average_rating")
 
 	if avgRatingStr != "" {

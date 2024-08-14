@@ -201,7 +201,6 @@ func (h *Handler) FetchServices(c *gin.Context) {
 // @Tags service
 // @Security ApiKeyAuth
 // @Param name query string false "Name"
-// @Param created_at query string false "Created at"
 // @Param price query float32 false "Price"
 // @Param duration query int32 false "Duration"
 // @Success 200 {object} services.SearchResp
@@ -211,10 +210,7 @@ func (h *Handler) FetchServices(c *gin.Context) {
 func (h *Handler) SearchServices(c *gin.Context) {
 	h.Logger.Info("SearchServices handler is invoked")
 
-	req := pb.Filter{
-		Name:      c.Query("name"),
-		CreatedAt: c.Query("created_at"),
-	}
+	req := pb.Filter{Name: c.Query("name")}
 	priceStr := c.Query("price")
 	duration := c.Query("duration")
 

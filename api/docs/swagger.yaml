@@ -891,10 +891,6 @@ paths:
         in: query
         name: company_name
         type: string
-      - description: Created at
-        in: query
-        name: created_at
-        type: string
       - description: Average rating
         in: query
         name: average_rating
@@ -1231,10 +1227,6 @@ paths:
       - description: Name
         in: query
         name: name
-        type: string
-      - description: Created at
-        in: query
-        name: created_at
         type: string
       - description: Price
         in: query

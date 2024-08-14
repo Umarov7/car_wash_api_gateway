@@ -585,12 +585,6 @@ const docTemplate = `{
                         "in": "query"
                     },
                     {
-                        "type": "string",
-                        "description": "Created at",
-                        "name": "created_at",
-                        "in": "query"
-                    },
-                    {
                         "type": "number",
                         "description": "Average rating",
                         "name": "average_rating",
@@ -1122,12 +1116,6 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Name",
                         "name": "name",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Created at",
-                        "name": "created_at",
                         "in": "query"
                     },
                     {
